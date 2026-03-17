@@ -79,7 +79,7 @@ fernq add --name myroom --password secret
 fernq list
 
 # List all rooms (show passwords)
-fernq list --show-pwd
+fernq list --show_pwd
 
 # Remove a room by UUID
 fernq remove --id <uuid>
@@ -99,7 +99,7 @@ fernq address
 - `-s, --socket <PATH>` - Specify Unix socket path (default: `/run/fernq/fernq.sock`)
 - `--dev` - Development mode (uses `/tmp/fernq.sock`)
 - `--json` - Output in JSON format
-- `--show-pwd` - Show passwords in plain text (default: hidden)
+- `--show_pwd` - Show passwords in plain text (default: hidden)
 
 ### Commands
 

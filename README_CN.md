@@ -79,7 +79,7 @@ fernq add --name myroom --password secret
 fernq list
 
 # 列出所有房间（显示密码）
-fernq list --show-pwd
+fernq list --show_pwd
 
 # 删除房间（通过 UUID）
 fernq remove --id <uuid>
@@ -99,7 +99,7 @@ fernq address
 - `-s, --socket <路径>` - 指定 Unix socket 路径（默认：`/run/fernq/fernq.sock`）
 - `--dev` - 开发模式（使用 `/tmp/fernq.sock`）
 - `--json` - 以 JSON 格式输出
-- `--show-pwd` - 显示密码明文（默认隐藏）
+- `--show_pwd` - 显示密码明文（默认隐藏）
 
 ### 命令列表
 

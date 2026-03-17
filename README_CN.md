@@ -15,14 +15,29 @@
 - **持久化存储** - 使用 fjall 键值数据库持久化房间数据
 - **优雅关闭** - 完善的连接处理和资源清理机制
 
-## 快速开始
+## 安装
 
-### 前置要求
+### 快速安装（推荐）
 
-- Rust 1.80+ (edition 2024)
-- Linux 环境（Unix Socket 支持）
+使用预编译的发布包快速安装：
+
+```bash
+wget https://github.com/fernq-org/fernq/releases/download/v0.1.0/fernq-v0.1.0-linux-x64.tar.gz
+tar xzvf fernq-v0.1.0-linux-x64.tar.gz
+cd install
+./install.sh
+```
+
+安装脚本会自动完成：
+- 将二进制文件复制到 `/usr/local/bin/`
+- 设置系统服务
+- 创建配置目录
 
 ### 从源码构建
+
+前置要求：
+- Rust 1.80+ (edition 2024)
+- Linux 环境（Unix Socket 支持）
 
 ```bash
 git clone https://github.com/fernq-org/fernq.git
@@ -30,7 +45,11 @@ cd fernq
 cargo build --release
 ```
 
+## 快速开始
+
 ### 启动服务器
+
+**开发模式：**
 
 ```bash
 # 创建配置文件
@@ -44,23 +63,87 @@ EOF
 ./target/release/fernqd --config config/config.ini --storage ./data
 ```
 
+**生产模式（作为系统服务）：**
+
+```bash
+sudo ./target/release/fernqd --config /etc/fernq/config.ini --storage /var/lib/fernq
+```
+
 ### 管理房间
 
 ```bash
 # 添加新房间
-./target/release/fernq add --name myroom --password secret
+fernq add --name myroom --password secret
 
 # 列出所有房间
-./target/release/fernq list
+fernq list
 
-# 删除房间
-./target/release/fernq remove --id <uuid>
+# 列出所有房间（显示密码）
+fernq list --show-pwd
+
+# 删除房间（通过 UUID）
+fernq remove --id <uuid>
 ```
 
-### 获取服务地址
+### 服务器信息
 
 ```bash
-./target/release/fernq address
+# 获取服务器监听地址
+fernq address
+```
+
+## 命令行工具
+
+### 全局选项
+
+- `-s, --socket <路径>` - 指定 Unix socket 路径（默认：`/run/fernq/fernq.sock`）
+- `--dev` - 开发模式（使用 `/tmp/fernq.sock`）
+- `--json` - 以 JSON 格式输出
+- `--show-pwd` - 显示密码明文（默认隐藏）
+
+### 命令列表
+
+**`add`** - 添加新房间
+```bash
+fernq add -n <房间名> -p <密码>
+fernq add --name <房间名> --password <密码>
+```
+
+**`remove`** - 删除房间（通过 UUID）
+```bash
+fernq remove -i <uuid>
+fernq remove --id <uuid>
+```
+
+**`list`** - 列出所有房间
+```bash
+fernq list
+fernq list --show-pwd  # 显示密码
+```
+
+**`address`** - 获取服务器监听地址
+```bash
+fernq address
+```
+
+**`uninstall`** - 卸载 FernQ（需要 root 权限）
+```bash
+sudo fernq uninstall
+```
+
+查看更多选项：
+```bash
+fernq --help
+```
+
+**`fernq list` 命令输出示例：**
+```
+Room ID                               Name                 Password
+--------------------------------------------------------------------
+550e8400-e29b-41d4-a716-446655440000 myroom              ******
+f47ac10b-58cc-4372-a567-0e02b2c3d479 testroom            ******
+
+Total: 2 room(s)
 ```
 
 ## 架构设计

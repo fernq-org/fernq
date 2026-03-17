@@ -15,14 +15,29 @@ A high-performance, lightweight message queue and room management system built w
 - **Persistent Storage** - Room data persistence using fjall key-value database
 - **Graceful Shutdown** - Clean connection handling and resource cleanup
 
-## Quick Start
+## Installation
 
-### Prerequisites
+### Quick Install (Recommended)
 
+For quick installation, use the pre-built release package:
+
+```bash
+wget https://github.com/fernq-org/fernq/releases/download/v0.1.0/fernq-v0.1.0-linux-x64.tar.gz
+tar xzvf fernq-v0.1.0-linux-x64.tar.gz
+cd install
+./install.sh
+```
+
+The install script will:
+- Copy binaries to `/usr/local/bin/`
+- Set up system service
+- Create configuration directories
+
+### From Source
+
+Prerequisites:
 - Rust 1.80+ edition 2024
 - Linux environment (Unix socket support)
-
-### Build from Source
 
 ```bash
 git clone https://github.com/fernq-org/fernq.git
@@ -30,7 +45,11 @@ cd fernq
 cargo build --release
 ```
 
+## Quick Start
+
 ### Start Server
+
+**Development Mode:**
 
 ```bash
 # Create config file
@@ -44,23 +63,87 @@ EOF
 ./target/release/fernqd --config config/config.ini --storage ./data
 ```
 
+**Production Mode (as system service):**
+
+```bash
+sudo ./target/release/fernqd --config /etc/fernq/config.ini --storage /var/lib/fernq
+```
+
 ### Manage Rooms
 
 ```bash
 # Add a new room
-./target/release/fernq add --name myroom --password secret
+fernq add --name myroom --password secret
 
 # List all rooms
-./target/release/fernq list
+fernq list
 
-# Remove a room
-./target/release/fernq remove --id <uuid>
+# List all rooms (show passwords)
+fernq list --show-pwd
+
+# Remove a room by UUID
+fernq remove --id <uuid>
 ```
 
-### Get Server Address
+### Server Information
 
 ```bash
-./target/release/fernq address
+# Get server listening address
+fernq address
+```
+
+## CLI Commands
+
+### Global Options
+
+- `-s, --socket <PATH>` - Specify Unix socket path (default: `/run/fernq/fernq.sock`)
+- `--dev` - Development mode (uses `/tmp/fernq.sock`)
+- `--json` - Output in JSON format
+- `--show-pwd` - Show passwords in plain text (default: hidden)
+
+### Commands
+
+**`add`** - Add a new room
+```bash
+fernq add -n <name> -p <password>
+fernq add --name <name> --password <password>
+```
+
+**`remove`** - Remove a room by UUID
+```bash
+fernq remove -i <uuid>
+fernq remove --id <uuid>
+```
+
+**`list`** - List all rooms
+```bash
+fernq list
+fernq list --show-pwd  # Show passwords
+```
+
+**`address`** - Get server listening address
+```bash
+fernq address
+```
+
+**`uninstall`** - Uninstall FernQ (requires root privileges)
+```bash
+sudo fernq uninstall
+```
+
+For more options, use:
+```bash
+fernq --help
+```
+
+**Example output for `fernq list`:**
+```
+Room ID                               Name                 Password
+--------------------------------------------------------------------
+550e8400-e29b-41d4-a716-446655440000 myroom              ******
+f47ac10b-58cc-4372-a567-0e02b2c3d479 testroom            ******
+
+Total: 2 room(s)
 ```
 
 ## Architecture

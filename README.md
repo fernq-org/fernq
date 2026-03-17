@@ -118,7 +118,7 @@ fernq remove --id <uuid>
 **`list`** - List all rooms
 ```bash
 fernq list
-fernq list --show-pwd  # Show passwords
+fernq list --show_pwd  # Show passwords
 ```
 
 **`address`** - Get server listening address

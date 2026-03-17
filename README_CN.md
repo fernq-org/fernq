@@ -118,7 +118,7 @@ fernq remove --id <uuid>
 **`list`** - 列出所有房间
 ```bash
 fernq list
-fernq list --show-pwd  # 显示密码
+fernq list --show_pwd  # 显示密码
 ```
 
 **`address`** - 获取服务器监听地址

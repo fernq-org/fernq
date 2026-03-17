@@ -25,7 +25,7 @@ For quick installation, use the pre-built release package:
 wget https://github.com/fernq-org/fernq/releases/download/v0.1.0/fernq-v0.1.0-linux-x64.tar.gz
 tar xzvf fernq-v0.1.0-linux-x64.tar.gz
 cd install
-./install.sh
+sudo bash install.sh
 ```
 
 The install script will:
